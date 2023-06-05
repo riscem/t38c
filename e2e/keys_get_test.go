@@ -14,7 +14,11 @@ func testKeys(t *testing.T, client *t38c.Client) {
 	testKeysGet(t, client)
 
 	// Expiration tests.
-	err := client.Keys.Set("foo", "baz").Bounds(0, 0, 20, 20).Field("age", 20).Expiration(2).Do(context.Background())
+	err := client.Keys.Set("foo", "baz").
+		Bounds(0, 0, 20, 20).
+		Field("age", "20").
+		Expiration(2).
+		Do(context.Background())
 	require.NoError(t, err)
 
 	resp, err := client.Keys.Get("foo", "baz").WithFields().Object(context.Background())

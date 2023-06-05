@@ -14,11 +14,13 @@ func TestChannels(t *testing.T) {
 		Expected string
 	}{
 		{
-			Cmd:      channels.SetChan("foo", geofence.Roam("cat", "dog", "*", 50, false).Actions(Enter, Exit)).toCmd(),
+			Cmd: channels.SetChan("foo", geofence.Roam("cat", "dog", "*", 50, false).Actions(Enter, Exit)).
+				toCmd(),
 			Expected: "SETCHAN foo NEARBY cat FENCE DETECT enter,exit ROAM dog * 50",
 		},
 		{
-			Cmd:      channels.SetChan("foo", geofence.Roam("cat", "dog", "*", 50, true).Actions(Enter, Exit)).toCmd(),
+			Cmd: channels.SetChan("foo", geofence.Roam("cat", "dog", "*", 50, true).Actions(Enter, Exit)).
+				toCmd(),
 			Expected: "SETCHAN foo NEARBY cat FENCE NODWELL DETECT enter,exit ROAM dog * 50",
 		},
 	}
@@ -36,11 +38,13 @@ func TestHooks(t *testing.T) {
 		Expected string
 	}{
 		{
-			Cmd:      hooks.SetHook("foo", "localhost:1337", geofence.Roam("cat", "dog", "*", 50, false).Actions(Enter, Exit)).toCmd(),
+			Cmd: hooks.SetHook("foo", "localhost:1337", geofence.Roam("cat", "dog", "*", 50, false).Actions(Enter, Exit)).
+				toCmd(),
 			Expected: "SETHOOK foo localhost:1337 NEARBY cat FENCE DETECT enter,exit ROAM dog * 50",
 		},
 		{
-			Cmd:      hooks.SetHook("foo", "localhost:1337", geofence.Roam("cat", "dog", "*", 50, true).Actions(Enter, Exit)).toCmd(),
+			Cmd: hooks.SetHook("foo", "localhost:1337", geofence.Roam("cat", "dog", "*", 50, true).Actions(Enter, Exit)).
+				toCmd(),
 			Expected: "SETHOOK foo localhost:1337 NEARBY cat FENCE NODWELL DETECT enter,exit ROAM dog * 50",
 		},
 	}
@@ -77,7 +81,13 @@ func TestSearch(t *testing.T) {
 			Expected: "WITHIN foo WHEREEVAL bar 0 DISTANCE GET baz objID",
 		},
 		{
-			Cmd:      search.Search("foo").Asc().Cursor(5).Limit(5).Match("bar*").FormatIDs().toCmd(),
+			Cmd: search.Search("foo").
+				Asc().
+				Cursor(5).
+				Limit(5).
+				Match("bar*").
+				FormatIDs().
+				toCmd(),
 			Expected: "SEARCH foo MATCH bar* ASC CURSOR 5 LIMIT 5 IDS",
 		},
 		{
@@ -85,11 +95,24 @@ func TestSearch(t *testing.T) {
 			Expected: "SEARCH foo WHERE bar 0 20 DESC COUNT",
 		},
 		{
-			Cmd:      search.Scan("foo").Cursor(5).Limit(5).Asc().Match("bar").Wherein("baz", 10, 12, 13).NoFields().toCmd(),
+			Cmd: search.Scan("foo").
+				Cursor(5).
+				Limit(5).
+				Asc().
+				Match("bar").
+				Wherein("baz", 10, 12, 13).
+				NoFields().
+				toCmd(),
 			Expected: "SCAN foo WHEREIN baz 3 10 12 13 MATCH bar ASC NOFIELDS CURSOR 5 LIMIT 5",
 		},
 		{
-			Cmd:      search.Scan("foo").Where("field", 0, 20).Limit(5).Desc().Match("bar").Format(FormatPoints).toCmd(),
+			Cmd: search.Scan("foo").
+				Where("field", 0, 20).
+				Limit(5).
+				Desc().
+				Match("bar").
+				Format(FormatPoints).
+				toCmd(),
 			Expected: "SCAN foo WHERE field 0 20 MATCH bar DESC LIMIT 5 POINTS",
 		},
 	}
@@ -137,7 +160,12 @@ func TestGeofence(t *testing.T) {
 			Expected: "WITHIN foo WHEREEVALSHA sha-hash 2 arg1 arg2 NOFIELDS LIMIT 1 FENCE BOUNDS 10 20 30 40",
 		},
 		{
-			Cmd:      geofence.Intersects("foo").Circle(10, 20, 30).Sparse(5).Where("param", 0, 100).Match("*").toCmd(),
+			Cmd: geofence.Intersects("foo").
+				Circle(10, 20, 30).
+				Sparse(5).
+				Where("param", 0, 100).
+				Match("*").
+				toCmd(),
 			Expected: "INTERSECTS foo WHERE param 0 100 MATCH * SPARSE 5 FENCE CIRCLE 10 20 30",
 		},
 	}
@@ -156,7 +184,7 @@ func TestKeys(t *testing.T) {
 		{
 			Cmd: keys.Set("agent", "49").
 				PointZ(0, 0, -20).
-				Field("age", 55).
+				Field("age", "55").
 				IfNotExists().
 				Expiration(60 * 60 * 24 * 365).toCmd(),
 			Expected: "SET agent 49 NX EX 31536000 FIELD age 55 POINT 0 0 -20",
@@ -164,37 +192,37 @@ func TestKeys(t *testing.T) {
 		{
 			Cmd: keys.Set("agent", "47").
 				PointZ(0, 0, -20).
-				Field("age", 55).
-				IfExists().Field("foo", 10).toCmd(),
+				Field("age", "55").
+				IfExists().Field("foo", "10").toCmd(),
 			Expected: "SET agent 47 XX FIELD age 55 FIELD foo 10 POINT 0 0 -20",
 		},
 		{
 			Cmd: keys.FSet("agent", "47").
-				Field("cash", 100500).
+				Field("cash", "100500").
 				IfExists().toCmd(),
 			Expected: "FSET agent 47 XX cash 100500",
 		},
 		{
 			Cmd: keys.FSet("agent", "47").
-				Field("id", 123456789012345680).
+				Field("id", "123456789012345680").
 				IfExists().toCmd(),
 			Expected: "FSET agent 47 XX id 123456789012345680",
 		},
 		{
 			Cmd: keys.FSet("agent", "47").
-				Field("id", -123456789012345680).
+				Field("id", "-123456789012345680").
 				IfExists().toCmd(),
 			Expected: "FSET agent 47 XX id -123456789012345680",
 		},
 		{
 			Cmd: keys.FSet("agent", "47").
-				Field("small", 0.00000000012345678901234568).
+				Field("small", "0.00000000012345678901234568").
 				IfExists().toCmd(),
 			Expected: "FSET agent 47 XX small 0.00000000012345678901234568",
 		},
 		{
 			Cmd: keys.FSet("agent", "47").
-				Field("small", -0.00000000012345678901234568).
+				Field("small", "-0.00000000012345678901234568").
 				IfExists().toCmd(),
 			Expected: "FSET agent 47 XX small -0.00000000012345678901234568",
 		},
