@@ -69,10 +69,10 @@ type SearchResponse struct {
 	Count   int     `json:"count"`
 	Fields  []field `json:"fields,omitempty"`
 	Objects []struct {
-		ID       string    `json:"ID"`
-		Object   Object    `json:"object"`
-		Fields   []float64 `json:"fields,omitempty"`
-		Distance *float64  `json:"distance,omitempty"`
+		ID       string   `json:"ID"`
+		Object   Object   `json:"object"`
+		Fields   []field  `json:"fields,omitempty"`
+		Distance *float64 `json:"distance,omitempty"`
 	} `json:"objects,omitempty"`
 	Points []struct {
 		ID       string   `json:"ID"`
