@@ -65,31 +65,31 @@ func (ob *Object) UnmarshalJSON(data []byte) error {
 
 // SearchResponse is a tile38 search response.
 type SearchResponse struct {
-	Cursor  int     `json:"cursor"`
-	Count   int     `json:"count"`
-	Fields  []field `json:"fields,omitempty"`
+	Cursor  int      `json:"cursor"`
+	Count   int      `json:"count"`
+	Fields  []string `json:"fields,omitempty"`
 	Objects []struct {
 		ID       string   `json:"ID"`
 		Object   Object   `json:"object"`
-		Fields   []field  `json:"fields,omitempty"`
+		Fields   []string `json:"fields,omitempty"`
 		Distance *float64 `json:"distance,omitempty"`
 	} `json:"objects,omitempty"`
 	Points []struct {
 		ID       string   `json:"ID"`
 		Point    Point    `json:"point"`
-		Fields   []field  `json:"fields,omitempty"`
+		Fields   []string `json:"fields,omitempty"`
 		Distance *float64 `json:"distance,omitempty"`
 	} `json:"points,omitempty"`
 	Bounds []struct {
 		ID       string   `json:"ID"`
 		Bounds   Bounds   `json:"bounds"`
-		Fields   []field  `json:"fields,omitempty"`
+		Fields   []string `json:"fields,omitempty"`
 		Distance *float64 `json:"distance,omitempty"`
 	} `json:"bounds,omitempty"`
 	Hashes []struct {
 		ID       string   `json:"id"`
 		Hash     string   `json:"hash"`
-		Fields   []field  `json:"fields,omitempty"`
+		Fields   []string `json:"fields,omitempty"`
 		Distance *float64 `json:"distance,omitempty"`
 	} `json:"hashes,omitempty"`
 	IDs []string `json:"ids,omitempty"`
